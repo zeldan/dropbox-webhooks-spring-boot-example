@@ -1,16 +1,19 @@
-package com.example;
+package com.example.controller;
 
 import static org.springframework.http.HttpStatus.TEMPORARY_REDIRECT;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
+import java.io.IOException;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.example.service.DropboxService;
 
 /**
  * Before your app can access a Dropbox user's files, the user must authorize your application using OAuth 2. Successfully completing this authorization
@@ -20,15 +23,20 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/dropbox/*")
 public class DropboxController {
 
-    private static final Logger LOG = LoggerFactory.getLogger(DropboxController.class);
+    @Autowired
+    private DropboxService dropboxService;
 
-    @RequestMapping(value = "/authorize", method = GET)
+    @RequestMapping(value = "/start-auth", method = GET)
     @ResponseStatus(TEMPORARY_REDIRECT)
-    public void authorize(final HttpServletRequest httpServletRequest, final HttpServletResponse httpServletResponse) {
+    public void dropboxAuthStart(final HttpServletRequest httpServletRequest, final HttpServletResponse httpServletResponse) throws IOException {
+        final String authorizePageUrl = dropboxService.dropboxStartAuth(httpServletRequest.getSession(true));
+        httpServletResponse.sendRedirect(authorizePageUrl);
     }
 
-    @RequestMapping(value = "/access", method = GET)
+    @RequestMapping(value = "/finish-auth", method = GET)
     @ResponseStatus(TEMPORARY_REDIRECT)
-    public void access(final HttpServletRequest httpServletRequest, final HttpServletResponse httpServletResponse) {
+    public void dropboxAuthFinish(final HttpServletRequest httpServletRequest, final HttpServletResponse httpServletResponse) {
+        // TODO: save user details
     }
+
 }
