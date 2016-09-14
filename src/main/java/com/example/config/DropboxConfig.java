@@ -21,8 +21,12 @@ public class DropboxConfig {
     private String appSecret;
 
     @Bean
-    public DbxWebAuth dbxWebAuth() {
-        final DbxRequestConfig requestConfig = new DbxRequestConfig(appName);
+    public DbxRequestConfig dbxRequestConfig() {
+        return new DbxRequestConfig(appName);
+    }
+
+    @Bean
+    public DbxWebAuth dbxWebAuth(final DbxRequestConfig requestConfig) {
         final DbxAppInfo appInfo = new DbxAppInfo(appKey, appSecret);
         return new DbxWebAuth(requestConfig, appInfo);
     }

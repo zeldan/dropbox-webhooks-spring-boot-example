@@ -28,6 +28,7 @@ repositories {
 
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter-web')
+	compile("org.springframework.boot:spring-boot-starter-redis")
 	compile("com.dropbox.core:dropbox-core-sdk:2.1.1");
 	
 	testCompile('org.springframework.boot:spring-boot-starter-test')
