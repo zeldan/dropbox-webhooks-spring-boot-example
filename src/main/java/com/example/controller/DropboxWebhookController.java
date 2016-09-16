@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.service.DeltaUsersParserService;
+import com.example.service.DropboxService;
 
 /**
  * Webhooks are a way for web apps to get real-time notifications when users' files change in Dropbox. Once you register a URI to receive webhooks, Dropbox will
@@ -27,6 +28,9 @@ public class DropboxWebhookController {
 
     @Autowired
     private DeltaUsersParserService deltaUsersParserService;
+
+    @Autowired
+    private DropboxService dropboxService;
 
     /**
      * Once you enter your webhook URI, an initial "verification request" will be made to that URI. This verification is an HTTP GET request with a query
@@ -48,6 +52,7 @@ public class DropboxWebhookController {
         final List<String> userIds = deltaUsersParserService.getUsers(notificationBody);
         for (final String userId : userIds) {
             LOG.info("changed user id: '{}'", userId);
+            dropboxService.logChangedFiles(userId);
         }
     }
 }
