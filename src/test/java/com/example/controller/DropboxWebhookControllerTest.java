@@ -30,7 +30,7 @@ import com.example.service.DeltaUsersParserService;
 import com.example.service.DropboxService;
 
 /**
- * Integration test for {@link DropboxWebhookController}
+ * Integration test for {@link DropboxWebhookController}.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest

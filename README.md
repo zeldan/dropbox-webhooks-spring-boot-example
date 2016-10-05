@@ -9,8 +9,8 @@ The server is keeping track of each user's OAuth access token and their latest c
 
 ## Technology Stack
 - Java 8
-- Spring boot 1.4
-- Dropbox Core SDK 2.1.1
+- Spring boot 1.4.1
+- Dropbox Core SDK 2.1.2
 - Redis
 
 ## Usage
@@ -25,3 +25,5 @@ The server is keeping track of each user's OAuth access token and their latest c
 1. run "gradlew bootRun"
 2. GET http://localhost:8080/dropbox/start-auth
 3. allow it
+
+After the above settings, you will see entries about the changes in the console log, if you modify files / directories in you dropbox directory.

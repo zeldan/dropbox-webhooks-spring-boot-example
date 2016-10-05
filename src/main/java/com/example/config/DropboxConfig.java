@@ -8,6 +8,9 @@ import com.dropbox.core.DbxAppInfo;
 import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.DbxWebAuth;
 
+/**
+ * Configuration class for dropbox settings.
+ */
 @Configuration
 public class DropboxConfig {
 
