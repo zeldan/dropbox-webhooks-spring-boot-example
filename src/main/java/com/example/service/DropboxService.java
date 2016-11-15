@@ -22,18 +22,24 @@ import com.dropbox.core.v2.files.ListFolderResult;
 import com.dropbox.core.v2.files.Metadata;
 import com.example.repository.UserTokenRepository;
 
+/**
+ * Use this class to make remote calls to the Dropbox API user endpoints.
+ * You'll need an access token first, normally acquired by directing a Dropbox user through the auth flow using DbxWebAuth.
+ */
 @Service
 public class DropboxService {
 
     private static final Logger LOG = getLogger(DropboxService.class);
 
-    private static final String REDIRECT_URI = "http://localhost:8080/dropbox/finish-auth";
     private static final String CURSORS_HASH_KEY = "cursors";
     private static final String TOKENS_HASH_KEY = "tokens";
 
     @Value("${dropbox.app.sessionstore.key}")
     private String sessionStoreKey;
 
+    @Value("${dropbox.app.redirect-uri}")
+    private String redirectUri;
+    
     @Autowired
     private DbxWebAuth auth;
 
@@ -54,14 +60,14 @@ public class DropboxService {
     public String startAuth(final HttpSession session) {
         final DbxSessionStore csrfTokenStore = new DbxStandardSessionStore(session, sessionStoreKey);
         final DbxWebAuth.Request authRequest = DbxWebAuth.newRequestBuilder()
-                .withRedirectUri(REDIRECT_URI, csrfTokenStore)
+                .withRedirectUri(redirectUri, csrfTokenStore)
                 .build();
         return auth.authorize(authRequest);
     }
 
     public void finishAuthAndSaveUserDetails(final HttpSession session, final Map<String, String[]> parameterMap) throws Exception {
         final DbxSessionStore csrfTokenStore = new DbxStandardSessionStore(session, sessionStoreKey);
-        final DbxAuthFinish authFinish = auth.finishFromRedirect(REDIRECT_URI, csrfTokenStore, parameterMap);
+        final DbxAuthFinish authFinish = auth.finishFromRedirect(redirectUri, csrfTokenStore, parameterMap);
         final String accessToken = authFinish.getAccessToken();
         final DbxClientV2 client = new DbxClientV2(requestConfig, accessToken);
         final String userId = authFinish.getUserId();

@@ -34,7 +34,7 @@ import com.example.service.DropboxService;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
-public class DropboxWebhookControllerTest {
+public class DropboxWebhookControllerIntegrationTest {
 
     private static final String ANY_CHALLENGE = "anyChallenge";
     private static final String ANY_NOTIFICATION = "anyNotification";
