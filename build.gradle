@@ -1,6 +1,6 @@
 buildscript {
 	ext {
-		springBootVersion = '1.4.2.RELEASE'
+		springBootVersion = '1.5.1.RELEASE'
 	}
 	repositories {
 		mavenCentral()
@@ -29,7 +29,7 @@ repositories {
 
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter-web')
-	compile("org.springframework.boot:spring-boot-starter-redis")
+	compile("org.springframework.boot:spring-boot-starter-data-redis")
 	compile("com.dropbox.core:dropbox-core-sdk:2.1.2");
 	compile("com.google.code.gson:gson:2.8.0");
 	
