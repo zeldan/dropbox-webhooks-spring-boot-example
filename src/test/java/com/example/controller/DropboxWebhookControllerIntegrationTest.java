@@ -17,10 +17,8 @@ import javax.annotation.Resource;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -38,18 +36,13 @@ public class DropboxWebhookControllerIntegrationTest {
 
     private static final String ANY_CHALLENGE = "anyChallenge";
     private static final String ANY_NOTIFICATION = "anyNotification";
-
     private static final String FIRST_USER = "firstUser";
 
-    @Mock
+    @MockBean
     private DropboxService dropboxServiceMock;
 
-    @Mock
+    @MockBean
     private DeltaUsersParserService deltaUsersParserServiceMock;
-
-    @Autowired
-    @InjectMocks
-    private DropboxWebhookController underTest;
 
     @Resource
     private WebApplicationContext webApplicationContext;

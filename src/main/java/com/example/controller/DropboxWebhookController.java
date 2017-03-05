@@ -1,13 +1,12 @@
 package com.example.controller;
 
 import static org.slf4j.LoggerFactory.getLogger;
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
-import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 import java.util.List;
 
 import org.slf4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,17 +25,20 @@ public class DropboxWebhookController {
 
     private static final Logger LOG = getLogger(DropboxWebhookController.class);
 
-    @Autowired
-    private DeltaUsersParserService deltaUsersParserService;
+    private final DeltaUsersParserService deltaUsersParserService;
 
-    @Autowired
-    private DropboxService dropboxService;
+    private final DropboxService dropboxService;
+
+    public DropboxWebhookController(final DeltaUsersParserService deltaUsersParserService, final DropboxService dropboxService) {
+        this.deltaUsersParserService = deltaUsersParserService;
+        this.dropboxService = dropboxService;
+    }
 
     /**
      * Once you enter your webhook URI, an initial "verification request" will be made to that URI. This verification is an HTTP GET request with a query
      * parameter called challenge.
      */
-    @RequestMapping(method = GET)
+    @GetMapping
     public String getWebhookVerification(@RequestParam("challenge") final String challenge) {
         LOG.info("Respond to the webhook verification (GET request) by echoing back the challenge parameter.");
         return challenge;
@@ -46,7 +48,7 @@ public class DropboxWebhookController {
      * Once your webhook URI is added, your app will start receiving "notification requests" every time a user's files change. A notification request is an HTTP
      * POST request with a JSON body.
      */
-    @RequestMapping(method = POST)
+    @PostMapping
     public void getFileData(@RequestBody final String notificationBody) throws Exception {
         LOG.info("Receive a list of changed user IDs from Dropbox and process each: '{}'", notificationBody);
         final List<String> userIds = deltaUsersParserService.getUsers(notificationBody);

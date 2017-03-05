@@ -40,7 +40,6 @@ public class DeltaUsersParserService {
 
     private JsonArray getJsonUsersFromNotificationBody(final String notification) {
         final JsonObject rootObject = new JsonParser().parse(notification).getAsJsonObject();
-        final JsonArray jsonUsers = rootObject.getAsJsonObject("delta").getAsJsonArray("users");
-        return jsonUsers;
+        return rootObject.getAsJsonObject("delta").getAsJsonArray("users");
     }
 }

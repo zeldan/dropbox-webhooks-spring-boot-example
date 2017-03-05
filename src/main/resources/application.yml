@@ -1,14 +1,16 @@
 # App Settings:
 server:
     port: 8080
-app:
-    name: DropboxWebhooksSpringBootExample
+    
+spring:
+    application:
+        name: DropboxWebhooksSpringBootExample
 
 # Dropbox Properties
 dropbox:
     app:
         key: 03rw0e7hldrtdlk
         secret: bb3fxppbjpho3vb
-        redirect-uri: http://localhost:8080/dropbox/finish-auth
-        sessionstore:
+        redirectUri: http://localhost:8080/dropbox/finish-auth
+        sessionStore:
             key: dropbox-auth-csrf-token

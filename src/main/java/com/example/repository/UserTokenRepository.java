@@ -1,6 +1,5 @@
 package com.example.repository;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -10,8 +9,11 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class UserTokenRepository {
 
-    @Autowired
-    private RedisTemplate<String, String> redisTemplate;
+    private final RedisTemplate<String, String> redisTemplate;
+
+    public UserTokenRepository(final RedisTemplate<String, String> redisTemplate) {
+        this.redisTemplate = redisTemplate;
+    }
 
     public void setValue(final String hashKey, final String key, final String value) {
         redisTemplate.boundHashOps(hashKey).put(key, value);

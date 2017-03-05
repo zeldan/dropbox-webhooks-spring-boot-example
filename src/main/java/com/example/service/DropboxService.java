@@ -8,8 +8,6 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.dropbox.core.DbxAuthFinish;
@@ -20,6 +18,7 @@ import com.dropbox.core.DbxWebAuth;
 import com.dropbox.core.v2.DbxClientV2;
 import com.dropbox.core.v2.files.ListFolderResult;
 import com.dropbox.core.v2.files.Metadata;
+import com.example.config.DropboxConfigProperties;
 import com.example.repository.UserTokenRepository;
 
 /**
@@ -34,20 +33,21 @@ public class DropboxService {
     private static final String CURSORS_HASH_KEY = "cursors";
     private static final String TOKENS_HASH_KEY = "tokens";
 
-    @Value("${dropbox.app.sessionstore.key}")
-    private String sessionStoreKey;
+    private final DropboxConfigProperties dropboxConfigProp;
 
-    @Value("${dropbox.app.redirect-uri}")
-    private String redirectUri;
-    
-    @Autowired
-    private DbxWebAuth auth;
+    private final DbxWebAuth auth;
 
-    @Autowired
-    private DbxRequestConfig requestConfig;
+    private final DbxRequestConfig requestConfig;
 
-    @Autowired
-    private UserTokenRepository userTokenRepository;
+    private final UserTokenRepository userTokenRepository;
+
+    public DropboxService(final DropboxConfigProperties dropboxConfigProperties, final DbxWebAuth auth, final DbxRequestConfig requestConfig,
+            final UserTokenRepository userTokenRepository) {
+        this.dropboxConfigProp = dropboxConfigProperties;
+        this.auth = auth;
+        this.requestConfig = requestConfig;
+        this.userTokenRepository = userTokenRepository;
+    }
 
     public void logChangedFiles(final String userId) throws Exception {
         final String accessToken = getTokenAndCheckIsTokenExists(userId);
@@ -58,16 +58,16 @@ public class DropboxService {
     }
 
     public String startAuth(final HttpSession session) {
-        final DbxSessionStore csrfTokenStore = new DbxStandardSessionStore(session, sessionStoreKey);
+        final DbxSessionStore csrfTokenStore = new DbxStandardSessionStore(session, dropboxConfigProp.getSessionStore().getKey());
         final DbxWebAuth.Request authRequest = DbxWebAuth.newRequestBuilder()
-                .withRedirectUri(redirectUri, csrfTokenStore)
+                .withRedirectUri(dropboxConfigProp.getRedirectUri(), csrfTokenStore)
                 .build();
         return auth.authorize(authRequest);
     }
 
     public void finishAuthAndSaveUserDetails(final HttpSession session, final Map<String, String[]> parameterMap) throws Exception {
-        final DbxSessionStore csrfTokenStore = new DbxStandardSessionStore(session, sessionStoreKey);
-        final DbxAuthFinish authFinish = auth.finishFromRedirect(redirectUri, csrfTokenStore, parameterMap);
+        final DbxSessionStore csrfTokenStore = new DbxStandardSessionStore(session, dropboxConfigProp.getSessionStore().getKey());
+        final DbxAuthFinish authFinish = auth.finishFromRedirect(dropboxConfigProp.getRedirectUri(), csrfTokenStore, parameterMap);
         final String accessToken = authFinish.getAccessToken();
         final DbxClientV2 client = new DbxClientV2(requestConfig, accessToken);
         final String userId = authFinish.getUserId();

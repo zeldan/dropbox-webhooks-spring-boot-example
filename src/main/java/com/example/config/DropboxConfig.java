@@ -14,14 +14,14 @@ import com.dropbox.core.DbxWebAuth;
 @Configuration
 public class DropboxConfig {
 
-    @Value("${app.name}")
+    @Value("${spring.application.name}")
     private String appName;
 
-    @Value("${dropbox.app.key}")
-    private String appKey;
+    private final DropboxConfigProperties dropboxConfigProperties;
 
-    @Value("${dropbox.app.secret}")
-    private String appSecret;
+    public DropboxConfig(final DropboxConfigProperties dropboxConfigProperties) {
+        this.dropboxConfigProperties = dropboxConfigProperties;
+    }
 
     @Bean
     public DbxRequestConfig dbxRequestConfig() {
@@ -30,7 +30,7 @@ public class DropboxConfig {
 
     @Bean
     public DbxWebAuth dbxWebAuth(final DbxRequestConfig requestConfig) {
-        final DbxAppInfo appInfo = new DbxAppInfo(appKey, appSecret);
+        final DbxAppInfo appInfo = new DbxAppInfo(dropboxConfigProperties.getKey(), dropboxConfigProperties.getSecret());
         return new DbxWebAuth(requestConfig, appInfo);
     }
 }
