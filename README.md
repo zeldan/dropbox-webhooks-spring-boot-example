@@ -10,7 +10,7 @@ The server is keeping track of each user's OAuth access token and their latest c
 ## Technology Stack
 - Java 8
 - Spring boot 1.5.2
-- Dropbox Core SDK 2.1.2
+- Dropbox Core SDK 3.0.0
 - Redis
 
 ## Usage
@@ -18,8 +18,8 @@ The server is keeping track of each user's OAuth access token and their latest c
 1. creating a new app in DropBox / My apps [here](https://www.dropbox.com/developers)
 2. add  `http://<your ip address>:<port>/dropbox/finish-auth` redirect uri to OAuth 2 / Redirect URIs
 3. add webhook uri `http://<your ip address>:<port>/webhook` to Webhooks
-4. change `dropbox.app.key` and `dropbox.app.secret` values in `application.properties`
-5. start redis
+4. change `dropbox.app.key` and `dropbox.app.secret` values in `application.yml`
+5. start redis locally
 
 ### Run the project
 1. run "gradlew bootRun"
