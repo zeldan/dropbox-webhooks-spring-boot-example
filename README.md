@@ -9,13 +9,13 @@ The server is keeping track of each user's OAuth access token and their latest c
 
 ## Technology Stack
 - Java 8
-- Spring boot 1.5.2
-- Dropbox Core SDK 3.0.0
+- Spring boot 2.0.0
+- Dropbox Core SDK 3.0.6
 - Redis
 
 ## Usage
 ### Environment settings
-1. creating a new app in DropBox / My apps [here](https://www.dropbox.com/developers)
+1. creating a new app in DropBox / My apps [here](https://www.dropbox.com/developers/apps)
 2. add  `http://<your ip address>:<port>/dropbox/finish-auth` redirect uri to OAuth 2 / Redirect URIs
 3. add webhook uri `http://<your ip address>:<port>/webhook` to Webhooks
 4. change `dropbox.app.key` and `dropbox.app.secret` values in `application.yml`

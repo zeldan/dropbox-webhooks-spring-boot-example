@@ -1,7 +1,7 @@
 # App Settings:
 server:
     port: 8080
-    
+ 
 spring:
     application:
         name: DropboxWebhooksSpringBootExample
@@ -9,8 +9,8 @@ spring:
 # Dropbox Properties
 dropbox:
     app:
-        key: 03rw0e7hldrtdlk
-        secret: bb3fxppbjpho3vb
+        key: todo
+        secret: todo
         redirectUri: http://localhost:8080/dropbox/finish-auth
         sessionStore:
             key: dropbox-auth-csrf-token

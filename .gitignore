@@ -3,6 +3,7 @@ build/
 .classpath
 .project
 .settings
+.sts4-cache
 
 # Ignore Gradle GUI config
 gradle-app.setting

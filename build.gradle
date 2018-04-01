@@ -1,6 +1,6 @@
 buildscript {
 	ext {
-		springBootVersion = '1.5.2.RELEASE'
+		springBootVersion = '2.0.0.RELEASE'
 	}
 	repositories {
 		mavenCentral()
@@ -14,6 +14,7 @@ apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
 
 jar {
 	baseName = 'dropbox-webhooks-spring-boot-example'
@@ -30,8 +31,8 @@ repositories {
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter-web')
 	compile("org.springframework.boot:spring-boot-starter-data-redis")
-	compile("com.dropbox.core:dropbox-core-sdk:3.0.0")
-	compile("com.google.code.gson:gson:2.8.0")
+	compile("com.dropbox.core:dropbox-core-sdk:3.0.6")
+	compile("com.google.code.gson:gson:2.8.2")
 	
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 }
