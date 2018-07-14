@@ -1,6 +1,6 @@
 buildscript {
 	ext {
-		springBootVersion = '2.0.0.RELEASE'
+		springBootVersion = '2.0.3.RELEASE'
 	}
 	repositories {
 		mavenCentral()
@@ -29,10 +29,12 @@ repositories {
 }
 
 dependencies {
+	annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
+
 	compile('org.springframework.boot:spring-boot-starter-web')
 	compile("org.springframework.boot:spring-boot-starter-data-redis")
-	compile("com.dropbox.core:dropbox-core-sdk:3.0.6")
-	compile("com.google.code.gson:gson:2.8.2")
+	compile("com.dropbox.core:dropbox-core-sdk:3.0.8")
+	compile("com.google.code.gson:gson:2.8.5")
 	
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 }
