@@ -1,4 +1,4 @@
-package com.example.config;
+package com.zeldan.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;

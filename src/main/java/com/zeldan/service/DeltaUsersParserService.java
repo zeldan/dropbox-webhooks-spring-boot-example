@@ -1,8 +1,9 @@
-package com.example.service;
+package com.zeldan.service;
 
 import static java.util.Collections.emptyList;
 import static org.slf4j.LoggerFactory.getLogger;
 
+import java.lang.reflect.Type;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -22,24 +23,27 @@ import com.google.gson.reflect.TypeToken;
 public class DeltaUsersParserService {
 
     private static final Logger LOG = getLogger(DeltaUsersParserService.class);
+
     private static final Gson GSON = new Gson();
 
-    public List<String> getUsers(final String notification) {
-        List<String> users = null;
+    public List<String> getUsers(String notification) {
         try {
-            final JsonArray jsonUsers = getJsonUsersFromNotificationBody(notification);
-            users = GSON.fromJson(jsonUsers, new TypeToken<List<String>>() {
-            }.getType());
+            JsonArray jsonUsers = getJsonUsersFromNotificationBody(notification);
+            List<String> users = GSON.fromJson(jsonUsers, createStringListTypeToken());
             LOG.debug("Parse users successfully from notification: '{}'", notification);
-        } catch (final Exception e) {
+            return users;
+        } catch (Exception e) {
             LOG.error("An error occured while try to parse users: ", e);
-            users = emptyList();
+            return emptyList();
         }
-        return users;
     }
 
-    private JsonArray getJsonUsersFromNotificationBody(final String notification) {
-        final JsonObject rootObject = new JsonParser().parse(notification).getAsJsonObject();
+    private Type createStringListTypeToken() {
+        return new TypeToken<List<String>>() {}.getType();
+    }
+
+    private JsonArray getJsonUsersFromNotificationBody(String notification) {
+        JsonObject rootObject = new JsonParser().parse(notification).getAsJsonObject();
         return rootObject.getAsJsonObject("delta").getAsJsonArray("users");
     }
 }

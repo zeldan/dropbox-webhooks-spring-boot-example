@@ -1,4 +1,4 @@
-package com.example.repository;
+package com.zeldan.repository;
 
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
@@ -11,15 +11,15 @@ public class UserTokenRepository {
 
     private final RedisTemplate<String, String> redisTemplate;
 
-    public UserTokenRepository(final RedisTemplate<String, String> redisTemplate) {
+    public UserTokenRepository(RedisTemplate<String, String> redisTemplate) {
         this.redisTemplate = redisTemplate;
     }
 
-    public void setValue(final String hashKey, final String key, final String value) {
+    public void setValue(String hashKey, String key, String value) {
         redisTemplate.boundHashOps(hashKey).put(key, value);
     }
 
-    public String getValue(final String hashKey, final String key) {
+    public String getValue(String hashKey, String key) {
         return (String) redisTemplate.boundHashOps(hashKey).get(key);
     }
 }

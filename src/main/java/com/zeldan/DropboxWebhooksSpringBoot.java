@@ -1,4 +1,4 @@
-package com.example;
+package com.zeldan;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -14,9 +14,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  *
  */
 @SpringBootApplication
-public class DropboxWebhooksSpringBootExampleApplication {
+public class DropboxWebhooksSpringBoot {
 
     public static void main(final String[] args) {
-        SpringApplication.run(DropboxWebhooksSpringBootExampleApplication.class, args);
+        SpringApplication.run(DropboxWebhooksSpringBoot.class, args);
     }
 }

@@ -1,4 +1,4 @@
-package com.example.controller;
+package com.zeldan.controller;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.service.DeltaUsersParserService;
-import com.example.service.DropboxService;
+import com.zeldan.service.DeltaUsersParserService;
+import com.zeldan.service.DropboxService;
 
 /**
  * Webhooks are a way for web apps to get real-time notifications when users' files change in Dropbox. Once you register a URI to receive webhooks, Dropbox will
@@ -29,7 +29,7 @@ public class DropboxWebhookController {
 
     private final DropboxService dropboxService;
 
-    public DropboxWebhookController(final DeltaUsersParserService deltaUsersParserService, final DropboxService dropboxService) {
+    public DropboxWebhookController(DeltaUsersParserService deltaUsersParserService, DropboxService dropboxService) {
         this.deltaUsersParserService = deltaUsersParserService;
         this.dropboxService = dropboxService;
     }
@@ -39,7 +39,7 @@ public class DropboxWebhookController {
      * parameter called challenge.
      */
     @GetMapping
-    public String getWebhookVerification(@RequestParam("challenge") final String challenge) {
+    public String getWebhookVerification(@RequestParam("challenge") String challenge) {
         LOG.info("Respond to the webhook verification (GET request) by echoing back the challenge parameter.");
         return challenge;
     }
@@ -49,10 +49,10 @@ public class DropboxWebhookController {
      * POST request with a JSON body.
      */
     @PostMapping
-    public void getFileData(@RequestBody final String notificationBody) throws Exception {
+    public void getFileData(@RequestBody String notificationBody) throws Exception {
         LOG.info("Receive a list of changed user IDs from Dropbox and process each: '{}'", notificationBody);
-        final List<String> userIds = deltaUsersParserService.getUsers(notificationBody);
-        for (final String userId : userIds) {
+        List<String> userIds = deltaUsersParserService.getUsers(notificationBody);
+        for (String userId : userIds) {
             LOG.info("changed user id: '{}'", userId);
             dropboxService.logChangedFiles(userId);
         }

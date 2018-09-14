@@ -1,4 +1,4 @@
-package com.example.controller;
+package com.zeldan.controller;
 
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.HttpStatus.TEMPORARY_REDIRECT;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.service.DropboxService;
+import com.zeldan.service.DropboxService;
 
 /**
  * Before your app can access a Dropbox user's files, the user must authorize your application using OAuth 2. Successfully completing this authorization
@@ -25,20 +25,20 @@ public class DropboxController {
 
     private final DropboxService dropboxService;
 
-    public DropboxController(final DropboxService dropboxService) {
+    public DropboxController(DropboxService dropboxService) {
         this.dropboxService = dropboxService;
     }
 
     @GetMapping("/start-auth")
     @ResponseStatus(TEMPORARY_REDIRECT)
-    public void dropboxAuthStart(final HttpServletRequest request, final HttpServletResponse response) throws IOException {
-        final String authorizePageUrl = dropboxService.startAuth(request.getSession(true));
+    public void dropboxAuthStart(HttpServletRequest request,  HttpServletResponse response) throws IOException {
+        String authorizePageUrl = dropboxService.startAuth(request.getSession(true));
         response.sendRedirect(authorizePageUrl);
     }
 
     @GetMapping("/finish-auth")
     @ResponseStatus(TEMPORARY_REDIRECT)
-    public void dropboxAuthFinish(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+    public void dropboxAuthFinish(HttpServletRequest request, HttpServletResponse response) throws Exception {
         dropboxService.finishAuthAndSaveUserDetails(request.getSession(true), request.getParameterMap());
         response.setStatus(OK.value());
     }

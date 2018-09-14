@@ -1,4 +1,4 @@
-package com.example.controller;
+package com.zeldan.controller;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
@@ -24,8 +24,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.web.context.WebApplicationContext;
 
-import com.example.service.DeltaUsersParserService;
-import com.example.service.DropboxService;
+import com.zeldan.controller.DropboxWebhookController;
+import com.zeldan.service.DeltaUsersParserService;
+import com.zeldan.service.DropboxService;
 
 /**
  * Integration test for {@link DropboxWebhookController}.
@@ -60,7 +61,7 @@ public class DropboxWebhookControllerIntegrationTest {
         // GIVEN
 
         // WHEN
-        final MvcResult mvcResult = mockMvc.perform(get("/webhook").param("challenge", ANY_CHALLENGE)).andReturn();
+        MvcResult mvcResult = mockMvc.perform(get("/webhook").param("challenge", ANY_CHALLENGE)).andReturn();
 
         // THEN
         assertEquals(ANY_CHALLENGE, mvcResult.getResponse().getContentAsString());

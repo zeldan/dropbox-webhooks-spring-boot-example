@@ -1,4 +1,4 @@
-package com.example.service;
+package com.zeldan.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -7,6 +7,8 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import com.zeldan.service.DeltaUsersParserService;
 
 /**
  * Unit test for {@link DeltaUsersParserService}.
@@ -43,7 +45,7 @@ public class DeltaUsersParserServiceTest {
         // GIVEN
 
         // WHEN
-        final List<String> users = underTest.getUsers(NOTIFICATION_BODY);
+        List<String> users = underTest.getUsers(NOTIFICATION_BODY);
 
         // THEN
         assertEquals(2, users.size());
@@ -56,7 +58,7 @@ public class DeltaUsersParserServiceTest {
         // GIVEN
 
         // WHEN
-        final List<String> users = underTest.getUsers("WRONG NOTIFICATION {BODY} !");
+        List<String> users = underTest.getUsers("WRONG NOTIFICATION {BODY} !");
 
         // THEN
         assertTrue(users.isEmpty());

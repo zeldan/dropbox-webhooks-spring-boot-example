@@ -1,4 +1,4 @@
-package com.example.service;
+package com.zeldan.service;
 
 import static org.slf4j.LoggerFactory.getLogger;
 import static org.springframework.util.StringUtils.isEmpty;
@@ -18,8 +18,8 @@ import com.dropbox.core.DbxWebAuth;
 import com.dropbox.core.v2.DbxClientV2;
 import com.dropbox.core.v2.files.ListFolderResult;
 import com.dropbox.core.v2.files.Metadata;
-import com.example.config.DropboxConfigProperties;
-import com.example.repository.UserTokenRepository;
+import com.zeldan.config.DropboxConfigProperties;
+import com.zeldan.repository.UserTokenRepository;
 
 /**
  * Use this class to make remote calls to the Dropbox API user endpoints.
@@ -41,57 +41,59 @@ public class DropboxService {
 
     private final UserTokenRepository userTokenRepository;
 
-    public DropboxService(final DropboxConfigProperties dropboxConfigProperties, final DbxWebAuth auth, final DbxRequestConfig requestConfig,
-            final UserTokenRepository userTokenRepository) {
+    public DropboxService(DropboxConfigProperties dropboxConfigProperties,
+                          DbxWebAuth auth,
+                          DbxRequestConfig requestConfig,
+                          UserTokenRepository userTokenRepository) {
         this.dropboxConfigProp = dropboxConfigProperties;
         this.auth = auth;
         this.requestConfig = requestConfig;
         this.userTokenRepository = userTokenRepository;
     }
 
-    public void logChangedFiles(final String userId) throws Exception {
-        final String accessToken = getTokenAndCheckIsTokenExists(userId);
-        final DbxClientV2 client = new DbxClientV2(requestConfig, accessToken);
-        final String cursor = userTokenRepository.getValue(CURSORS_HASH_KEY, userId);
-        final ListFolderResult listFolderContinue = client.files().listFolderContinue(cursor);
+    public void logChangedFiles(String userId) throws Exception {
+        String accessToken = getTokenAndCheckIsTokenExists(userId);
+        DbxClientV2 client = new DbxClientV2(requestConfig, accessToken);
+        String cursor = userTokenRepository.getValue(CURSORS_HASH_KEY, userId);
+        ListFolderResult listFolderContinue = client.files().listFolderContinue(cursor);
         logChangedFilesOfUser(userId, listFolderContinue);
     }
 
-    public String startAuth(final HttpSession session) {
-        final DbxSessionStore csrfTokenStore = new DbxStandardSessionStore(session, dropboxConfigProp.getSessionStore().getKey());
-        final DbxWebAuth.Request authRequest = DbxWebAuth.newRequestBuilder()
+    public String startAuth(HttpSession session) {
+        DbxSessionStore csrfTokenStore = new DbxStandardSessionStore(session, dropboxConfigProp.getSessionStore().getKey());
+        DbxWebAuth.Request authRequest = DbxWebAuth.newRequestBuilder()
                 .withRedirectUri(dropboxConfigProp.getRedirectUri(), csrfTokenStore)
                 .build();
         return auth.authorize(authRequest);
     }
 
-    public void finishAuthAndSaveUserDetails(final HttpSession session, final Map<String, String[]> parameterMap) throws Exception {
-        final DbxSessionStore csrfTokenStore = new DbxStandardSessionStore(session, dropboxConfigProp.getSessionStore().getKey());
-        final DbxAuthFinish authFinish = auth.finishFromRedirect(dropboxConfigProp.getRedirectUri(), csrfTokenStore, parameterMap);
-        final String accessToken = authFinish.getAccessToken();
-        final DbxClientV2 client = new DbxClientV2(requestConfig, accessToken);
-        final String userId = authFinish.getUserId();
-        final ListFolderResult listFolderResult = client.files().listFolderBuilder("").withRecursive(true).start();
+    public void finishAuthAndSaveUserDetails(HttpSession session, Map<String, String[]> parameterMap) throws Exception {
+        DbxSessionStore csrfTokenStore = new DbxStandardSessionStore(session, dropboxConfigProp.getSessionStore().getKey());
+        DbxAuthFinish authFinish = auth.finishFromRedirect(dropboxConfigProp.getRedirectUri(), csrfTokenStore, parameterMap);
+        String accessToken = authFinish.getAccessToken();
+        DbxClientV2 client = new DbxClientV2(requestConfig, accessToken);
+        String userId = authFinish.getUserId();
+        ListFolderResult listFolderResult = client.files().listFolderBuilder("").withRecursive(true).start();
         saveAccessTokenAndActualCursor(userId, accessToken, listFolderResult);
     }
 
-    private void saveAccessTokenAndActualCursor(final String userId, final String accessToken, final ListFolderResult listFolderResult) {
+    private void saveAccessTokenAndActualCursor(String userId, String accessToken, ListFolderResult listFolderResult) {
         userTokenRepository.setValue(TOKENS_HASH_KEY, userId, accessToken);
         userTokenRepository.setValue(CURSORS_HASH_KEY, userId, listFolderResult.getCursor());
     }
 
-    private String getTokenAndCheckIsTokenExists(final String userId) throws IllegalAccessException {
-        final String token = userTokenRepository.getValue(TOKENS_HASH_KEY, userId);
+    private String getTokenAndCheckIsTokenExists(String userId) throws IllegalAccessException {
+        String token = userTokenRepository.getValue(TOKENS_HASH_KEY, userId);
         if (isEmpty(token)) {
             throw new IllegalAccessException("Please allow access first.");
         }
         return token;
     }
 
-    private void logChangedFilesOfUser(final String userId, final ListFolderResult listFolderContinue) {
+    private void logChangedFilesOfUser(String userId, ListFolderResult listFolderContinue) {
         boolean hasMore = true;
         while (hasMore) {
-            for (final Metadata md : listFolderContinue.getEntries()) {
+            for (Metadata md : listFolderContinue.getEntries()) {
                 LOG.info("Changed metadata: '{}'", md);
             }
             hasMore = listFolderContinue.getHasMore();
