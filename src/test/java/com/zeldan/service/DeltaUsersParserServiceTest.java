@@ -54,7 +54,7 @@ public class DeltaUsersParserServiceTest {
     }
 
     @Test
-    public void shouldReturnWithEmptyListIfTheNoficiationIsWrong() {
+    public void shouldReturnWithEmptyListIfTheNotificationIsWrong() {
         // GIVEN
 
         // WHEN

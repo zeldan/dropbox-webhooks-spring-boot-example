@@ -34,11 +34,8 @@ public class DropboxService {
     private static final String TOKENS_HASH_KEY = "tokens";
 
     private final DropboxConfigProperties dropboxConfigProp;
-
     private final DbxWebAuth auth;
-
     private final DbxRequestConfig requestConfig;
-
     private final UserTokenRepository userTokenRepository;
 
     public DropboxService(DropboxConfigProperties dropboxConfigProperties,

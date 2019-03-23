@@ -3,7 +3,7 @@ package com.zeldan.controller;
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.anyString;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -24,7 +24,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.web.context.WebApplicationContext;
 
-import com.zeldan.controller.DropboxWebhookController;
 import com.zeldan.service.DeltaUsersParserService;
 import com.zeldan.service.DropboxService;
 
@@ -68,7 +67,7 @@ public class DropboxWebhookControllerIntegrationTest {
     }
 
     @Test
-    public void shouldDontLogChangedFilesIfThereAreNoUsersInNotification() throws Exception {
+    public void shouldDonNotLogChangedFilesIfThereAreNoUsersInNotification() throws Exception {
         // GIVEN
         when(deltaUsersParserServiceMock.getUsers(ANY_NOTIFICATION)).thenReturn(emptyList());
 

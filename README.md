@@ -9,8 +9,8 @@ The server is keeping track of each user's OAuth access token and their latest c
 
 ## Technology Stack
 - Java 8
-- Spring boot 2.0.5
-- Dropbox Core SDK 3.0.8
+- Spring boot 2.1.3
+- Dropbox Core SDK 3.0.11
 - Redis
 
 ## Usage

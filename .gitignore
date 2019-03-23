@@ -1,19 +1,23 @@
-.gradle
-build/
+### STS ###
+.apt_generated
 .classpath
+.factorypath
 .project
 .settings
+.springBeans
 .sts4-cache
+build
 
-# Ignore Gradle GUI config
+###  Gradle ###
 gradle-app.setting
-
-# Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
+.gradle
 !gradle-wrapper.jar
-
-# Cache of project
 .gradletasknamecache
 
-# # Work around https://youtrack.jetbrains.com/issue/IDEA-116898
-# gradle/wrapper/gradle-wrapper.properties
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+out/
 /bin/

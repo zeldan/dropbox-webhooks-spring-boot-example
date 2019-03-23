@@ -12,7 +12,6 @@ import com.dropbox.core.DbxWebAuth;
 public class DropboxConfig {
 
     private final String appName;
-
     private final DropboxConfigProperties dropboxConfigProperties;
 
     public DropboxConfig(DropboxConfigProperties dropboxConfigProperties,

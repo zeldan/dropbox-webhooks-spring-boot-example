@@ -33,7 +33,7 @@ public class DeltaUsersParserService {
             LOG.debug("Parse users successfully from notification: '{}'", notification);
             return users;
         } catch (Exception e) {
-            LOG.error("An error occured while try to parse users: ", e);
+            LOG.error("An error occurred while trying to parse users: ", e);
             return emptyList();
         }
     }

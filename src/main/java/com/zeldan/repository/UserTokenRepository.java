@@ -4,7 +4,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
 
 /**
- * Stores user's token infos (session, cursor) in redis.
+ * Stores user's token info (session, cursor) in redis.
  */
 @Repository
 public class UserTokenRepository {
